@@ -1,53 +1,180 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agentic Affiliate Manager</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
-<body class="bg-gray-900 text-white min-h-screen flex flex-col items-center justify-center p-4">
-    <div class="max-w-md w-full bg-gray-800 p-6 rounded-2xl shadow-xl border border-gray-700">
-        <h1 class="text-2xl font-bold text-center text-indigo-400 mb-2">Agentic Affiliate Manager</h1>
-        <p class="text-gray-400 text-center text-sm mb-6">WarriorPlus & JVZoo Automated Campaign Builder</p>
+<body class="bg-gray-950 text-gray-100 min-h-screen p-4 md:p-8">
+    <div class="max-w-4xl mx-auto space-y-6">
         
-        <div class="space-y-4">
-            <div>
-                <label class="block text-sm font-medium text-gray-300 mb-1">Enter Niche or Product Name</label>
-                <input type="text" id="nicheInput" placeholder="e.g., AI Video Creator" class="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg focus:outline-none focus:border-indigo-500 text-white">
+        <!-- Header -->
+        <div class="text-center space-y-2">
+            <h1 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-500">
+                Agentic Affiliate Campaign Manager
+            </h1>
+            <p class="text-gray-400 text-sm">Automated WarriorPlus & JVZoo Multi-Agent Campaign Creator</p>
+        </div>
+
+        <!-- Input Form Card -->
+        <div class="bg-gray-900 border border-gray-800 rounded-2xl p-5 shadow-2xl space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">OpenAI API Key</label>
+                    <input type="password" id="apiKey" placeholder="sk-proj-..." class="w-full px-4 py-2.5 bg-gray-950 border border-gray-800 rounded-xl focus:outline-none focus:border-indigo-500 text-sm text-white transition">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Niche / Product Topic</label>
+                    <input type="text" id="nicheInput" placeholder="e.g., AI Video Creator, Crypto Bot" class="w-full px-4 py-2.5 bg-gray-950 border border-gray-800 rounded-xl focus:outline-none focus:border-indigo-500 text-sm text-white transition">
+                </div>
             </div>
-            
-            <button onclick="startAgent()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-200">
-                Run Multi-Agent Workflow
+
+            <button onclick="runMultiAgentSystem()" id="runBtn" class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold py-3 px-6 rounded-xl transition duration-200 shadow-lg flex items-center justify-center space-x-2">
+                <i class="fa-solid fa-robot"></i>
+                <span>Generate Full Affiliate Campaign</span>
             </button>
         </div>
 
-        <div id="output" class="mt-6 hidden bg-gray-900 p-4 rounded-lg border border-gray-700 text-sm text-gray-300">
-            <p class="text-indigo-400 font-semibold mb-2">Agent Status:</p>
-            <div id="statusText" class="space-y-2">Initializing AI Agents...</div>
+        <!-- Agent Progress Status -->
+        <div id="statusCard" class="hidden bg-gray-900 border border-gray-800 rounded-2xl p-5 space-y-3">
+            <h3 class="text-sm font-semibold text-indigo-400 flex items-center space-x-2">
+                <i class="fa-solid fa-spinner fa-spin"></i>
+                <span>Multi-Agent Workflow Active</span>
+            </h3>
+            <div id="statusLogs" class="space-y-2 text-xs font-mono text-gray-300"></div>
         </div>
+
+        <!-- Output Tabs & Result Area -->
+        <div id="outputContainer" class="hidden bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden shadow-2xl">
+            <!-- Navigation Tabs -->
+            <div class="flex border-b border-gray-800 bg-gray-950/50 overflow-x-auto">
+                <button onclick="switchTab('research')" id="tab-research" class="px-5 py-3 text-sm font-medium text-indigo-400 border-b-2 border-indigo-500 focus:outline-none whitespace-nowrap">
+                    <i class="fa-solid fa-magnifying-glass mr-1.5"></i> 1. Product Research
+                </button>
+                <button onclick="switchTab('article')" id="tab-article" class="px-5 py-3 text-sm font-medium text-gray-400 hover:text-gray-200 focus:outline-none whitespace-nowrap">
+                    <i class="fa-solid fa-pen-nib mr-1.5"></i> 2. SEO Review Article
+                </button>
+                <button onclick="switchTab('email')" id="tab-email" class="px-5 py-3 text-sm font-medium text-gray-400 hover:text-gray-200 focus:outline-none whitespace-nowrap">
+                    <i class="fa-solid fa-envelope mr-1.5"></i> 3. Email Swipes
+                </button>
+                <button onclick="switchTab('bonus')" id="tab-bonus" class="px-5 py-3 text-sm font-medium text-gray-400 hover:text-gray-200 focus:outline-none whitespace-nowrap">
+                    <i class="fa-solid fa-code mr-1.5"></i> 4. Bonus Page HTML
+                </button>
+            </div>
+
+            <!-- Content Area -->
+            <div class="p-6">
+                <div class="flex justify-end mb-2">
+                    <button onclick="copyCurrentTab()" class="text-xs bg-gray-800 hover:bg-gray-700 text-gray-300 px-3 py-1.5 rounded-lg border border-gray-700 transition flex items-center space-x-1">
+                        <i class="fa-regular fa-copy"></i>
+                        <span>Copy Output</span>
+                    </button>
+                </div>
+                <div id="tabContent" class="prose prose-invert max-w-none text-sm text-gray-300 whitespace-pre-wrap font-sans leading-relaxed"></div>
+            </div>
+        </div>
+
     </div>
 
     <script>
-        function startAgent() {
-            const niche = document.getElementById('nicheInput').value;
-            if(!niche) {
-                alert('Please enter a niche first!');
-                return;
+        let results = {};
+
+        async function runMultiAgentSystem() {
+            const apiKey = document.getElementById('apiKey').value.trim();
+            const niche = document.getElementById('nicheInput').value.trim();
+
+            if (!apiKey) { alert('Please enter your OpenAI API Key!'); return; }
+            if (!niche) { alert('Please enter a Niche or Product Name!'); return; }
+
+            const runBtn = document.getElementById('runBtn');
+            const statusCard = document.getElementById('statusCard');
+            const statusLogs = document.getElementById('statusLogs');
+            const outputContainer = document.getElementById('outputContainer');
+
+            runBtn.disabled = true;
+            runBtn.classList.add('opacity-50');
+            statusCard.classList.remove('hidden');
+            outputContainer.classList.add('hidden');
+            statusLogs.innerHTML = "";
+
+            try {
+                // Agent 1: Research
+                logStatus("🤖 <b>Agent 1 (Researcher):</b> Analyzing market trends & high-converting WarriorPlus/JVZoo products for '" + niche + "'...");
+                const researchPrompt = `Act as an Affiliate Marketing Researcher. Find or formulate a top-converting JVZoo/WarriorPlus product blueprint in the '${niche}' niche. Provide: 1. Product Name 2. Target Audience 3. Price Point & Funnel Structure 4. Key Features 5. High-converting Angle. Keep it detailed and structured.`;
+                results.research = await callOpenAI(apiKey, researchPrompt);
+
+                // Agent 2: Article
+                logStatus("✍️ <b>Agent 2 (SEO Copywriter):</b> Drafting high-converting review article and email swipe...");
+                const articlePrompt = `Act as an expert Affiliate Review Writer. Based on this product research:\n\n${results.research}\n\nWrite a complete 600-word SEO Review Article with Attention-grabbing Headline, Pros & Cons, Key Features, and Call-To-Actions.`;
+                results.article = await callOpenAI(apiKey, articlePrompt);
+
+                // Agent 3: Email Swipes
+                const emailPrompt = `Based on the product review above, write 2 high-converting Email Swipes (Subject lines + Email Body with Call-To-Action placeholders) to promote this product.`;
+                results.email = await callOpenAI(apiKey, emailPrompt);
+
+                // Agent 4: Bonus Page Builder
+                logStatus("🚀 <b>Agent 3 (Bonus Page Builder):</b> Generating HTML landing page template code...");
+                const bonusPrompt = `Act as a Frontend Developer. Generate a clean, responsive single HTML bonus landing page snippet using Tailwind CSS for promoting this product. Include Headline, Subheadline, 3 Bonus Offer Boxes, and a Buy Button placeholder. Output ONLY valid HTML code.`;
+                results.bonus = await callOpenAI(apiKey, bonusPrompt);
+
+                logStatus("✅ <b>All Agents Completed Work Successfully!</b>");
+                
+                outputContainer.classList.remove('hidden');
+                switchTab('research');
+
+            } catch (err) {
+                alert("Error: " + err.message);
+                logStatus("❌ <b>Error occurred:</b> " + err.message);
+            } finally {
+                runBtn.disabled = false;
+                runBtn.classList.remove('opacity-50');
             }
-            const output = document.getElementById('output');
-            const status = document.getElementById('statusText');
-            output.classList.remove('hidden');
-            
-            status.innerHTML = "🤖 <b>Agent 1:</b> Researching top products on WarriorPlus/JVZoo...";
-            setTimeout(() => {
-                status.innerHTML += "<br>✍️ <b>Agent 2:</b> Writing SEO review & email swipe...";
-            }, 2000);
-            setTimeout(() => {
-                status.innerHTML += "<br>🚀 <b>Agent 3:</b> Building bonus landing page. Completed!";
-            }, 4000);
+        }
+
+        async function callOpenAI(apiKey, prompt) {
+            const res = await fetch("https://api.openai.com/v1/chat/completions", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${apiKey}`
+                },
+                body: JSON.stringify({
+                    model: "gpt-3.5-turbo",
+                    messages: [{ role: "user", content: prompt }],
+                    temperature: 0.7
+                })
+            });
+
+            const data = await res.json();
+            if (data.error) throw new Error(data.error.message);
+            return data.choices[0].message.content;
+        }
+
+        function logStatus(msg) {
+            const statusLogs = document.getElementById('statusLogs');
+            statusLogs.innerHTML += `<div class="p-2 bg-gray-950 rounded border border-gray-850">${msg}</div>`;
+        }
+
+        function switchTab(tab) {
+            ['research', 'article', 'email', 'bonus'].forEach(t => {
+                const btn = document.getElementById(`tab-${t}`);
+                if (t === tab) {
+                    btn.className = "px-5 py-3 text-sm font-medium text-indigo-400 border-b-2 border-indigo-500 focus:outline-none whitespace-nowrap";
+                } else {
+                    btn.className = "px-5 py-3 text-sm font-medium text-gray-400 hover:text-gray-200 focus:outline-none whitespace-nowrap";
+                }
+            });
+            document.getElementById('tabContent').innerText = results[tab] || '';
+        }
+
+        function copyCurrentTab() {
+            const text = document.getElementById('tabContent').innerText;
+            if(!text) return;
+            navigator.clipboard.writeText(text);
+            alert('Copied to clipboard!');
         }
     </script>
 </body>
 </html>
-
