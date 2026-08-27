@@ -1,1 +1,53 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agentic Affiliate Manager</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white min-h-screen flex flex-col items-center justify-center p-4">
+    <div class="max-w-md w-full bg-gray-800 p-6 rounded-2xl shadow-xl border border-gray-700">
+        <h1 class="text-2xl font-bold text-center text-indigo-400 mb-2">Agentic Affiliate Manager</h1>
+        <p class="text-gray-400 text-center text-sm mb-6">WarriorPlus & JVZoo Automated Campaign Builder</p>
+        
+        <div class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-300 mb-1">Enter Niche or Product Name</label>
+                <input type="text" id="nicheInput" placeholder="e.g., AI Video Creator" class="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg focus:outline-none focus:border-indigo-500 text-white">
+            </div>
+            
+            <button onclick="startAgent()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-200">
+                Run Multi-Agent Workflow
+            </button>
+        </div>
+
+        <div id="output" class="mt-6 hidden bg-gray-900 p-4 rounded-lg border border-gray-700 text-sm text-gray-300">
+            <p class="text-indigo-400 font-semibold mb-2">Agent Status:</p>
+            <div id="statusText" class="space-y-2">Initializing AI Agents...</div>
+        </div>
+    </div>
+
+    <script>
+        function startAgent() {
+            const niche = document.getElementById('nicheInput').value;
+            if(!niche) {
+                alert('Please enter a niche first!');
+                return;
+            }
+            const output = document.getElementById('output');
+            const status = document.getElementById('statusText');
+            output.classList.remove('hidden');
+            
+            status.innerHTML = "🤖 <b>Agent 1:</b> Researching top products on WarriorPlus/JVZoo...";
+            setTimeout(() => {
+                status.innerHTML += "<br>✍️ <b>Agent 2:</b> Writing SEO review & email swipe...";
+            }, 2000);
+            setTimeout(() => {
+                status.innerHTML += "<br>🚀 <b>Agent 3:</b> Building bonus landing page. Completed!";
+            }, 4000);
+        }
+    </script>
+</body>
+</html>
 
